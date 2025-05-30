@@ -44,15 +44,15 @@ pipeline {
 
 def buildApp(){
     echo "Building of node application is starting.."
-    sh "docker build -t mtararujs/sample-book-app ."
+    sh "docker build -t margarita121/sample-book-app ."
 
     echo "Pushing image to docker registry.."
-    sh "docker push mtararujs/sample-book-app"
+    sh "docker push margarita121/sample-book-app"
 }
 
 def deploy(String environment){
     echo "Deployment of node application on ${environment} environment.."
-    sh "docker pull mtararujs/sample-book-app"
+    sh "docker pull margarita121/sample-book-app"
     // String lowercaseEnv = environment.toLowerCase()
     sh "docker compose stop sample-book-app-${environment.toLowerCase()}"
     sh "docker compose rm sample-book-app-${environment.toLowerCase()}"
@@ -61,10 +61,10 @@ def deploy(String environment){
 
 def test(String environment){
     echo "API test executuon against node application on ${environment} environment.."
-    sh "docker pull mtararujs/api-tests"
+    sh "docker pull margarita121/api-tests"
     def directory = pwd()
     sh "echo '${directory}'"
-    sh "docker run --rm --network=sample-book-app-network-compose -v '${directory}':/api-tests/mochawesome-report/ mtararujs/api-tests run BOOKS BOOKS_${environment}"
+    sh "docker run --rm --network=sample-book-app-network-compose -v '${directory}':/api-tests/mochawesome-report/ margarita121/api-tests run BOOKS BOOKS_${environment}"
     sh "ls"
     archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome.json', followSymlinks: false
 }
