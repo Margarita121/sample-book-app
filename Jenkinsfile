@@ -1,112 +1,70 @@
 pipeline {
     agent any
+    // triggers{
+    //     pollSCM('*/1 * * * *')
+    // }
     stages {
         stage('build') {
             steps {
-                echo "Building of node application is starting.."
+                buildApp()
             }
         }
         stage('deploy-dev') {
             steps {
-                echo "Deployment of node application on DEV environment.."
+                deploy("DEV")
             }
         }
         stage('test-dev') {
             steps {
-                echo "API test executuon against node application on DEV environment.."
+                test("DEV")
             }
         }
         stage('deploy-stg') {
             steps {
-                echo "Deployment of node application on STG environment.."
+                deploy("STG")
             }
         }
         stage('test-stg') {
             steps {
-                echo "API test executuon against node application on STG environment.."
+                test("STG")
             }
         }
         stage('deploy-prd') {
             steps {
-                echo "Deployment of node application on PRD environment.."
+                deploy("PRD")
             }
         }
         stage('test-prd') {
             steps {
-                echo "API test executuon against node application on PRD environment.."
+                test("PRD")
             }
         }
     }
 }
 
+def buildApp(){
+    echo "Building of node application is starting.."
+    // sh "docker build -t margarita121/sample-book-app ."
 
-// pipeline {
-//     agent any
-//     triggers{
-//         pollSCM('*/1 * * * *')
-//     }
-//     stages {
-//         stage('build') {
-//             steps {
-//                 buildApp()
-//             }
-//         }
-//         stage('deploy-dev') {
-//             steps {
-//                 deploy("DEV")
-//             }
-//         }
-//         stage('test-dev') {
-//             steps {
-//                 test("DEV")
-//             }
-//         }
-//         stage('deploy-stg') {
-//             steps {
-//                 deploy("STG")
-//             }
-//         }
-//         stage('test-stg') {
-//             steps {
-//                 test("STG")
-//             }
-//         }
-//         stage('deploy-prd') {
-//             steps {
-//                 deploy("PRD")
-//             }
-//         }
-//         stage('test-prd') {
-//             steps {
-//                 test("PRD")
-//             }
-//         }
-//     }
-// }
+    // echo "Pushing image to docker registry.."
+    // sh "docker push margarita121/sample-book-app"
+}
 
-// def buildApp(){
-//     echo "Building of node application is starting.."
-//     sh "docker build -t margarita121/sample-book-app ."
+def deploy(String environment){
+    echo "Deployment of node application on ${environment} environment.."
+    // sh "docker pull margarita121/sample-book-app"
+    // // String lowercaseEnv = environment.toLowerCase()
+    // sh "docker compose stop sample-book-app-${environment.toLowerCase()}"
+    // sh "docker compose rm sample-book-app-${environment.toLowerCase()}"
+    // sh "docker compose up -d sample-book-app-${environment.toLowerCase()}"
+}
 
-//     echo "Pushing image to docker registry.."
-//     sh "docker push margarita121/sample-book-app"
-// }
-
-// def deploy(String environment){
-//     echo "Deployment of node application on ${environment} environment.."
-//     sh "docker pull margarita121/sample-book-app"
-//     // String lowercaseEnv = environment.toLowerCase()
-//     sh "docker compose stop sample-book-app-${environment.toLowerCase()}"
-//     sh "docker compose rm sample-book-app-${environment.toLowerCase()}"
-//     sh "docker compose up -d sample-book-app-${environment.toLowerCase()}"
-// }
-
-// def test(String environment){
-//     echo "API test executuon against node application on ${environment} environment.."
-//     sh "docker pull margarita121/api-tests"
-//     def directory = pwd()
-//     sh "echo '${directory}'"
-//     sh "docker run --rm --network=sample-book-app-network-compose -v '${directory}':/api-tests/mochawesome-report/ margarita121/api-tests run BOOKS BOOKS_${environment}"
-//     sh "ls"
-//     archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome.json', followSymlinks: false
-// }
+def test(String environment){
+    echo "API test executuon against node application on ${environment} environment.."
+    // sh "docker pull margarita121/api-tests"
+    // def directory = pwd()
+    // sh "echo '${directory}'"
+    // sh "docker run --rm --network=sample-book-app-network-compose -v '${directory}':/api-tests/mochawesome-report/ margarita121/api-tests run BOOKS BOOKS_${environment}"
+    // sh "ls"
+    // archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome.json', followSymlinks: false
+}
