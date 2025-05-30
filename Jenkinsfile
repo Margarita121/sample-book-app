@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    // triggers{
-    //     pollSCM('*/1 * * * *')
-    // }
+    triggers{
+        pollSCM('*/1 * * * *')
+    }
     stages {
         stage('build') {
             steps {
@@ -61,10 +61,10 @@ def deploy(String environment){
 
 def test(String environment){
     echo "API test executuon against node application on ${environment} environment.."
-    // sh "docker pull margarita121/api-tests"
-    // def directory = pwd()
-    // sh "echo '${directory}'"
-    // sh "docker run --rm --network=sample-book-app-network-compose -v '${directory}':/api-tests/mochawesome-report/ margarita121/api-tests run BOOKS BOOKS_${environment}"
-    // sh "ls"
+    sh "docker pull margarita121/api-tests"
+    def directory = pwd()
+    sh "echo '${directory}'"
+    sh "docker run --rm --network=sample-book-app-network-compose -v '${directory}':/api-tests/mochawesome-report/ margarita121/api-tests run BOOKS BOOKS_${environment}"
+    sh "ls"
     // archiveArtifacts allowEmptyArchive: true, artifacts: 'mochawesome.json', followSymlinks: false
 }
