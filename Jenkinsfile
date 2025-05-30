@@ -52,11 +52,11 @@ def buildApp(){
 
 def deploy(String environment){
     echo "Deployment of node application on ${environment} environment.."
-    // sh "docker pull margarita121/sample-book-app"
+    sh "docker pull margarita121/sample-book-app"
     // // String lowercaseEnv = environment.toLowerCase()
-    // sh "docker compose stop sample-book-app-${environment.toLowerCase()}"
-    // sh "docker compose rm sample-book-app-${environment.toLowerCase()}"
-    // sh "docker compose up -d sample-book-app-${environment.toLowerCase()}"
+    sh "docker compose stop sample-book-app-${environment.toLowerCase()}"
+    sh "docker compose rm sample-book-app-${environment.toLowerCase()}"
+    sh "docker compose up -d sample-book-app-${environment.toLowerCase()}"
 }
 
 def test(String environment){
